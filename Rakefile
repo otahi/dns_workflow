@@ -1,4 +1,5 @@
 #!/usr/bin/env rake
+# -*- coding: utf-8 -*-
 
 require 'rake'
 

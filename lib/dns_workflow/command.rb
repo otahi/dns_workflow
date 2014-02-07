@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 require 'thor'
 require_relative '../dnswf'
 

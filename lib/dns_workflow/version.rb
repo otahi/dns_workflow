@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # DNS workflow which provides a workflow for
 # DNS operations
 module DNSWF
