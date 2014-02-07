@@ -1,9 +1,10 @@
-require_relative "../dnswf"
+require_relative '../dnswf'
 require 'highline/import'
 
 module DNSWF
+  # Represent "a DNS server", which is testable and
+  # operable.
   class Dns
-
     def test
       puts 'testing DNS'
     end
@@ -24,7 +25,7 @@ module DNSWF
       if execute
         puts 'updating DNS settings'
         puts 'refleshing DNS settings'
-        self.test
+        test
       end
     end
 
@@ -34,12 +35,11 @@ module DNSWF
       if execute
         puts 'rolling back to original DNS settings'
         puts 'refleshing DNS settings'
-        self.test
+        test
       end
     end
 
     def initialize
     end
-
   end
 end

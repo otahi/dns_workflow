@@ -17,9 +17,8 @@ end
 
 Rubocop::RakeTask.new(:rubocop) do |task|
   task.patterns = %w(bin/*
-                       lib/**/*.rb
-                       spec/**/*.rb
-                       Rakefile
-                       Gemfile)
+                     lib/**/*.rb
+                     spec/**/*.rb
+                     Rakefile
+                     Gemfile)
 end
-
