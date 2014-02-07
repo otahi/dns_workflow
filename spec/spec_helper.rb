@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-require_relative '../lib/dnswf'
-
 require 'coveralls'
 Coveralls.wear!
+
+require_relative '../lib/dnswf'
