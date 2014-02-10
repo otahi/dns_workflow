@@ -58,6 +58,9 @@ describe DNSWF::Command do
         agree_true = double('agree_true')
         agree_true.stub(:agree).and_return(true)
         HighLine.stub(:new).and_return(agree_true)
+        dns = DNSWF::Dns.new
+        dns.stub(:backup_files).and_return(true)
+        DNSWF::Dns.stub(:new).and_return(dns)
 
         agree_true.should_receive(:agree).with(/Are you sure?/)
 
