@@ -22,69 +22,75 @@ describe DNSWF::Command do
   end
 
   describe '#init' do
-    context('without argument')
-    it 'create a new Vagrantfile' do
-      DNSWF::Command.start(['init'])
-      $stdout.string.should include('creating a new Vagrantfile')
+    context('without argument') do
+      it 'create a new Vagrantfile' do
+        DNSWF::Command.start(['init'])
+        $stdout.string.should include('creating a new Vagrantfile')
+      end
     end
   end
 
   describe '#prepare' do
-    context('without argument')
-    it 'run vagrant up' do
-      Kernel.stub(:system).and_return(true)
+    context('without argument') do
+      it 'run vagrant up' do
+        Kernel.stub(:system).and_return(true)
 
-      DNSWF::Command.start(['prepare'])
+        DNSWF::Command.start(['prepare'])
 
-      $stdout.string.should include('running "vagrant up"')
+        $stdout.string.should include('running "vagrant up"')
+      end
     end
   end
 
   describe '#test' do
-    context('without argument')
-    it 'run local rspec tests' do
-      DNSWF::Command.start(['test'])
+    context('without argument') do
+      it 'run local rspec tests' do
+        DNSWF::Command.start(['test'])
 
-      $stdout.string.should include('testing DNS')
+        $stdout.string.should include('testing DNS')
+      end
     end
   end
 
   describe '#deploy' do
-    context('without argument')
-    it 'ask if run deploy or not' do
-      agree_true = double('agree_true')
-      agree_true.stub(:agree).and_return(true)
-      HighLine.stub(:new).and_return(agree_true)
+    context('without argument') do
+      it 'ask if run deploy or not' do
+        agree_true = double('agree_true')
+        agree_true.stub(:agree).and_return(true)
+        HighLine.stub(:new).and_return(agree_true)
 
-      agree_true.should_receive(:agree).with(/Are you sure?/)
+        agree_true.should_receive(:agree).with(/Are you sure?/)
 
-      DNSWF::Command.start(['deploy'])
+        DNSWF::Command.start(['deploy'])
+      end
     end
   end
 
   describe '#update' do
-    context('without argument')
-    it 'ask if run update or not' do
-      agree_true = double('agree_true')
-      agree_true.stub(:agree).and_return(true)
-      HighLine.stub(:new).and_return(agree_true)
+    context('without argument') do
+      it 'ask if run update or not' do
+        agree_true = double('agree_true')
+        agree_true.stub(:agree).and_return(true)
+        HighLine.stub(:new).and_return(agree_true)
 
-      agree_true.should_receive(:agree).with(/Are you sure?/)
+        agree_true.should_receive(:agree).with(/Are you sure?/)
 
-      DNSWF::Command.start(['update'])
+        DNSWF::Command.start(['update'])
+      end
     end
   end
 
   describe '#rollback' do
-    context('without argument')
-    it 'ask if run rollback or not' do
-      agree_true = double('agree_true')
-      agree_true.stub(:agree).and_return(true)
-      HighLine.stub(:new).and_return(agree_true)
+    context('without argument') do
+      it 'ask if run rollback or not' do
+        agree_true = double('agree_true')
+        agree_true.stub(:agree).and_return(true)
+        HighLine.stub(:new).and_return(agree_true)
 
-      agree_true.should_receive(:agree).with(/Are you sure?/)
+        agree_true.should_receive(:agree).with(/Are you sure?/)
 
-      DNSWF::Command.start(['rollback'])
+        DNSWF::Command.start(['rollback'])
+      end
     end
   end
 
