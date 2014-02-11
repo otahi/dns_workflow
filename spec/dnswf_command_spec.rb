@@ -23,76 +23,9 @@ describe DNSWF::Command do
 
   describe '#init' do
     context('without argument') do
-      it 'create a new Vagrantfile' do
+      it 'create a new Rakefile' do
         DNSWF::Command.start(['init'])
-        $stdout.string.should include('creating a new Vagrantfile')
-      end
-    end
-  end
-
-  describe '#prepare' do
-    context('without argument') do
-      it 'run vagrant up' do
-        Kernel.stub(:system).and_return(true)
-
-        DNSWF::Command.start(['prepare'])
-
-        $stdout.string.should include('running "vagrant up"')
-      end
-    end
-  end
-
-  describe '#test' do
-    context('without argument') do
-      it 'run local rspec tests' do
-        DNSWF::Command.start(['test'])
-
-        $stdout.string.should include('testing DNS')
-      end
-    end
-  end
-
-  describe '#deploy' do
-    context('without argument') do
-      it 'ask if run deploy or not' do
-        agree_true = double('agree_true')
-        agree_true.stub(:agree).and_return(true)
-        HighLine.stub(:new).and_return(agree_true)
-        dns = DNSWF::Dns.new
-        dns.stub(:backup_files).and_return(true)
-        DNSWF::Dns.stub(:new).and_return(dns)
-
-        agree_true.should_receive(:agree).with(/Are you sure?/)
-
-        DNSWF::Command.start(['deploy'])
-      end
-    end
-  end
-
-  describe '#update' do
-    context('without argument') do
-      it 'ask if run update or not' do
-        agree_true = double('agree_true')
-        agree_true.stub(:agree).and_return(true)
-        HighLine.stub(:new).and_return(agree_true)
-
-        agree_true.should_receive(:agree).with(/Are you sure?/)
-
-        DNSWF::Command.start(['update'])
-      end
-    end
-  end
-
-  describe '#rollback' do
-    context('without argument') do
-      it 'ask if run rollback or not' do
-        agree_true = double('agree_true')
-        agree_true.stub(:agree).and_return(true)
-        HighLine.stub(:new).and_return(agree_true)
-
-        agree_true.should_receive(:agree).with(/Are you sure?/)
-
-        DNSWF::Command.start(['rollback'])
+        $stdout.string.should include('creating a new Rakefile')
       end
     end
   end

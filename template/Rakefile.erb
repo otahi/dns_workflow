@@ -1,0 +1,25 @@
+#!/usr/bin/env rake
+# -*- coding: utf-8 -*-
+
+require 'rake'
+require 'rspec/core/rake_task'
+
+RSpec::Core::RakeTask.new(:spec) do |t|
+  t.pattern = 'spec/*/*_spec.rb'
+end
+
+task:deploy => [:backup, :install, :checkfile] do |t|
+end
+
+task:backup do |t|
+end
+
+task:install do |t|
+end
+
+task:update do |t|
+end
+
+
+task:rollback do |t|
+end
