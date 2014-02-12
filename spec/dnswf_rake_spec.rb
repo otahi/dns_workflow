@@ -24,8 +24,17 @@ describe DNSWF::Rake do
     context 'on the localhost' do
       it 'create Rakefile' do
         DNSWF::Rake.create_rakefile
-        Dir.glob('Rakefile')
-            .should have_at_least(1).include(/Rakefile/)
+        Dir.glob('*')
+            .should include('Rakefile')
+      end
+      it 'create Rakefile with config' do
+        File.write('dnswf.yml', 'target_zone: example.zone')
+
+        DNSWF::Rake.create_rakefile
+        Dir.glob('*')
+            .should include('Rakefile')
+        File.read('Rakefile')
+          .should include('example.zone')
       end
     end
   end
