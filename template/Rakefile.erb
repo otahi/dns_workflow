@@ -1,5 +1,5 @@
 #!/usr/bin/env rake
-# -*- coding: utf-8 -*-
+# -*- mode: ruby; coding: utf-8 -*-
 
 require 'rake'
 require 'rspec/core/rake_task'
@@ -8,15 +8,26 @@ RSpec::Core::RakeTask.new(:spec) do |t|
   t.pattern = 'spec/*/*_spec.rb'
 end
 
-target_zone: <%= target_zone %>
+#variables to operate
+:target_zone => <%= target_zone %>
+:target_zone_files => FileList.new(<%= target_zone_files %>)
+:target_conf_files => FileList.new(<%= target_conf_files %>)
 
-task:deploy => [:backup, :install, :checkfile] do |t|
+task :deploy => [:backup, :install, :checkfile] do |t|
 end
 
-task:backup do |t|
+task :backup do |t|
+  backup_dir = "backup/#{time_str}"
+  target_zone_files.each do |zfile|
+    time_str = Time.now.strftime('%Y-%m-%d-%H-%M-%S')
+    directory "#{backup_dir}#{File.dirname(zfile)}"
+    file zfile do
+      cp zfile, File.dirname(zfile)
+    end
+  end
 end
 
-task:install do |t|
+task :install do |t|
 end
 
 task:update do |t|
