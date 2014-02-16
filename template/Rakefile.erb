@@ -4,35 +4,59 @@
 require 'rake'
 require 'rspec/core/rake_task'
 
-RSpec::Core::RakeTask.new(:spec) do |t|
-  t.pattern = 'spec/*/*_spec.rb'
-end
-
-#variables to operate
+#variables to operate, are inserted to independ from dnswf
 :target_zone => <%= target_zone %>
 :target_zone_files => FileList.new(<%= target_zone_files %>)
 :target_conf_files => FileList.new(<%= target_conf_files %>)
 
-task :deploy => [:backup, :install, :checkfile] do |t|
+RSpec::Core::RakeTask.new(:spec) do |t|
+  t.pattern = 'spec/*/*_spec.rb'
 end
 
-task :backup do |t|
+task :deploy       => [:backup, :diff, :install, :validate, :update_confirm, :update]
+task :deploy_force => [:backup, :diff, :install, :validate, :update]
+
+task :backup, [:zones] do |t, args|
+  time_str = Time.now.strftime('%Y-%m-%d-%H-%M-%S')
   backup_dir = "backup/#{time_str}"
-  target_zone_files.each do |zfile|
-    time_str = Time.now.strftime('%Y-%m-%d-%H-%M-%S')
-    directory "#{backup_dir}#{File.dirname(zfile)}"
-    file zfile do
-      cp zfile, File.dirname(zfile)
+  (target_conf_files | target_zone_files).each do |f|
+    directory "#{backup_dir}#{File.dirname(f)}"
+    file f do
+      cp f, File.dirname(f)
     end
   end
 end
 
-task :install do |t|
+task :diff, [:zones] do |t, args|
+  # diff conf files from src dst
+  # diff conf files from src dst
 end
 
-task:update do |t|
+task :install, [:zones] do |t, args|
+  # install conf files from src dst
+  # install zone files from src dst
 end
 
 
-task:rollback do |t|
+task :validate, [:zones] do |t, args|
+  # check conf file
+  # check zone file
+  # check zone serial updated
+  # stop if invalid
+end
+
+task :update_confirm, [:zones] do |t, args|
+  # reload dns config / reload dns server
+  # zone transfer
+end
+
+task :update, [:zones] do |t, args|
+  # reload dns config / reload dns server
+  # zone transfer
+end
+
+
+task :rollback, [:zones] do |t, args|
+  # move backuped files
+  # increment zone serial
 end
