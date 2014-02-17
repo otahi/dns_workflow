@@ -3,6 +3,7 @@
 
 require 'rake'
 require 'rspec/core/rake_task'
+require 'diffy'
 
 #variables to operate, are inserted to independ from dnswf
 :target_zone => <%= target_zone %>
@@ -13,36 +14,44 @@ RSpec::Core::RakeTask.new(:spec) do |t|
   t.pattern = 'spec/*/*_spec.rb'
 end
 
-task :deploy       => [:backup, :diff, :install, :validate, :update_confirm, :update]
-task :deploy_force => [:backup, :diff, :install, :validate, :update]
+task :deploy       => [:backup, :diff, :install, :validate, :update_confirm, :update, :test]
+task :deploy_force => [:backup, :diff, :install, :validate, :update, :test]
 
 task :backup, [:zones] do |t, args|
   time_str = Time.now.strftime('%Y-%m-%d-%H-%M-%S')
   backup_dir = "backup/#{time_str}"
-  (target_conf_files | target_zone_files).each do |f|
+  (conf_files | zone_files).each do |,f|
     directory "#{backup_dir}#{File.dirname(f)}"
     file f do
-      cp f, File.dirname(f)
+      cp f, "#{backup_dir}/#{File.dirname(f)}"
     end
   end
 end
 
 task :diff, [:zones] do |t, args|
-  # diff conf files from src dst
-  # diff conf files from src dst
+  (conf_files | zone_files).each do |src,dst|
+    Diffy.Diff.new(File.read(src, :encoding => Encoding::UTF_8),
+                   File.read(dst, :encoding => Encoding::UTF_8))
+  end
 end
 
 task :install, [:zones] do |t, args|
-  # install conf files from src dst
-  # install zone files from src dst
+  (conf_files | zone_files).each do |src,dst|
+    # TODO: arrange with filemode, owner, group as same as dst
+    sh %Q(install #{dst} #{src})
+  end
 end
 
 
 task :validate, [:zones] do |t, args|
-  # check conf file
-  # check zone file
-  # check zone serial updated
   # stop if invalid
+  conf_files.each do |,dst|
+    sh %Q(named-checkconf #{dst})
+  end
+  zone_files.each do |,dst|
+    sh %Q(named-checkconf #{dst})
+  end
+  # TODO: check zone serial updated
 end
 
 task :update_confirm, [:zones] do |t, args|
@@ -53,10 +62,17 @@ end
 task :update, [:zones] do |t, args|
   # reload dns config / reload dns server
   # zone transfer
+  sh 'service named reload'
 end
 
 
 task :rollback, [:zones] do |t, args|
-  # move backuped files
-  # increment zone serial
+  # TODO: catch newest backup
+  time_str = Time.now.strftime('%Y-%m-%d-%H-%M-%S')
+  backup_dir = "backup/#{time_str}"
+  (conf_files | zone_files).each do |,f|
+      cp "#{backup_dir}/#{File.dirname(f)}", f
+    end
+  end
+  # TODO: increment zone serial
 end
