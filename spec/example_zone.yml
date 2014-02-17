@@ -15,5 +15,4 @@
       - src: 'exapmle.jp.zone'
         dst: '/var/named/master/exapmle.jp.zone'
       - src: 'exapmle.jp.rev'
-        dst: '/var/named/master/exapmle.jp.rev'
-  
+        dst: '/var/named/master/exapmle.jp.rev'  
